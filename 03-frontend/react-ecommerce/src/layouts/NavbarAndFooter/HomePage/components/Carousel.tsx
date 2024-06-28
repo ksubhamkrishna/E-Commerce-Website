@@ -1,4 +1,12 @@
+import { useEffect, useState } from "react";
+import ProductModel from "../../../../models/ProductModel";
+
+
+
 export const Carousel = () => {
+
+
+
     return (
         <div className='container mt-5' style={{ height: 550 }}>
             <div className='homepage-carousel-title'>
@@ -21,7 +29,7 @@ export const Carousel = () => {
                                     />
                                     <h6 className='mt-2'>Furniture</h6>
                                     <p>SubhKart</p>
-                                    <a className='btn main-color text-white' href='#'>Reserve</a>
+
                                 </div>
                             </div>
                         </div>
@@ -38,7 +46,7 @@ export const Carousel = () => {
                                     />
                                     <h6 className='mt-2'>Books</h6>
                                     <p>SubhKart</p>
-                                    <a className='btn main-color text-white' href='#'>Reserve</a>
+
                                 </div>
                             </div>
                         </div>
@@ -55,7 +63,7 @@ export const Carousel = () => {
                                     />
                                     <h6 className='mt-2'>Electronics</h6>
                                     <p>SubhKart</p>
-                                    <a className='btn main-color text-white' href='#'>Reserve</a>
+
                                 </div>
                             </div>
                         </div>
@@ -72,7 +80,7 @@ export const Carousel = () => {
                                     />
                                     <h6 className='mt-2'>Fashion</h6>
                                     <p>SubhKart</p>
-                                    <a className='btn main-color text-white' href='#'>Reserve</a>
+
                                 </div>
                             </div>
                         </div>
@@ -89,7 +97,7 @@ export const Carousel = () => {
                                     />
                                     <h6 className='mt-2'>Groceries</h6>
                                     <p>SubhKart</p>
-                                    <a className='btn main-color text-white' href='#'>Reserve</a>
+
                                 </div>
                             </div>
                         </div>
@@ -106,7 +114,7 @@ export const Carousel = () => {
                                     />
                                     <h6 className='mt-2'>Health and Skincare Products</h6>
                                     <p>SubhKart</p>
-                                    <a className='btn main-color text-white' href='#'>Reserve</a>
+
                                 </div>
                             </div>
                         </div>
@@ -123,7 +131,7 @@ export const Carousel = () => {
                                     />
                                     <h6 className='mt-2'>Kitchen And HouseHold Items</h6>
                                     <p>SubhKart</p>
-                                    <a className='btn main-color text-white' href='#'>Reserve</a>
+
                                 </div>
                             </div>
                         </div>
@@ -140,7 +148,7 @@ export const Carousel = () => {
                                     />
                                     <h6 className='mt-2'>Sports Products</h6>
                                     <p>SubhKart</p>
-                                    <a className='btn main-color text-white' href='#'>Reserve</a>
+
                                 </div>
                             </div>
                         </div>
@@ -170,7 +178,7 @@ export const Carousel = () => {
                         />
                         <h6 className='mt-2'>Furniture</h6>
                         <p>SubhKart</p>
-                        <a className='btn main-color text-white' href='#'>Reserve</a>
+
                     </div>
                 </div>
             </div>
