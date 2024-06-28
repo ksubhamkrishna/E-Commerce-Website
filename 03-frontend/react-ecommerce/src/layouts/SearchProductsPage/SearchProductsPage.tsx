@@ -31,6 +31,8 @@ export const SearchProductsPage = () => {
 
             const responseData = responseJson._embedded.products;
 
+            setTotalAmountOfProducts(responseJson.page.totalElements);
+            setTotalPages(responseJson.page.totalPages);
             const loadedProducts: ProductModel[] = [];
 
             for (const key in responseData) {
@@ -55,8 +57,8 @@ export const SearchProductsPage = () => {
             setHttpError(error.message);
 
         })
-
-    }, []);
+        window.scrollTo(0, 0);
+    }, [currentPage]);
 
     if (isLoading) {
         return (
@@ -75,107 +77,115 @@ export const SearchProductsPage = () => {
 
     const indexOfLastProduct: number = currentPage * productsPerPage;
     const indexOfFirstProduct: number = indexOfLastProduct - productsPerPage;
-    let lastItem = productsPerPage * currentPage <= totalAmountOfProducts ? productsPerPage * currentPage : totalAmountOfProducts;
+    let lastItem = productsPerPage * currentPage <= totalAmountOfProducts ?
+        productsPerPage * currentPage : totalAmountOfProducts;
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
         <div>
+            <div className='container'>
+                <div>
+                    <div className='row mt-5'>
+                        <div className='col-6'>
+                            <div className='d-flex'>
+                                <input className='form-control me-2' type='search'
+                                    placeholder='Search' aria-labelledby='Search' />
+                                <button className='btn btn-outline-success'>
+                                    Search
+                                </button>
 
-            <div className='container'
-            >
-                <div className='row mt-5'>
-                    <div className='col-6'>
-                        <div className='d-flex'>
-                            <input className='form-control me-2' type='search'
-                                placeholder='Search' aria-labelledby='Search' />
-                            <button className='btn btn-outline-success'>
-                                Search
-                            </button>
+                            </div>
+                        </div>
+                        <div className='col-4' >
+                            <div className='dropdown'>
+                                <button className='btn btn-secondary dropdown-toggle' type='button'
+                                    id='dropdownMenuButton1' data-bs-toggle='dropdown'
+                                    aria-expanded='false'>
+                                    Category
+                                </button>
+                                <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            All
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            Furniture
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            Books
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            Electronics
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            Fashion
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            Groceries
+                                        </a>
+                                    </li>
 
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            Health and Skincare Products
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            Kitchen and Household Items
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a className='dropdown-item' href='#'>
+                                            Sports Products
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div className='col-4' >
-                        <div className='dropdown'>
-                            <button className='btn btn-secondary dropdown-toggle' type='button'
-                                id='dropdownMenuButton1' data-bs-toggle='dropdown'
-                                aria-expanded='false'>
-                                Category
-                            </button>
-                            <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        All
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        Furniture
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        Books
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        Electronics
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        Fashion
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        Groceries
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        Health and Skincare Products
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        Kitchen and Household Items
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a className='dropdown-item' href='#'>
-                                        Sports Products
-                                    </a>
-                                </li>
-
-                            </ul>
-
-
-                        </div>
+                    {/* {totalAmountOfProducts > 0 ? */}
+                    {/* <> */}
+                    <div className='mt-3'>
+                        <h5>Number of results:({totalAmountOfProducts}) </h5>
                     </div>
+                    <p>
+                        {indexOfFirstProduct + 1} to {lastItem} of {totalAmountOfProducts} items:
+                    </p>
+                    {products.map(product => (
+
+                        <SearchProduct product={product} key={product.id} />
+                    ))}
+                    {/* </>
+                    :
+                    <div className='m-5'>
+                            <h3>
+                                Can't find what you are looking for?
+                            </h3>
+                            <a type='button' className='btn main-color btn-md px-4 me-md-2 fw-bold text-white'
+                                href='#'>Library Services</a>
+                        </div>
+                    } */}
+
+                    {totalPages > 1 &&
+                        <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
+                    }
                 </div>
-                <div className='mt-3'>
-                    <h5>Number of results:(7) </h5>
-
-                </div>
-                <p>
-                    1 to5 of 7 items:
-                </p>
-                {products.map(product => (
-
-                    <SearchProduct product={product} key={product.id} />
-                ))}
-
-                {totalPages > 1 &&
-                    <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
-                }
             </div>
-
-
         </div>
     );
 
