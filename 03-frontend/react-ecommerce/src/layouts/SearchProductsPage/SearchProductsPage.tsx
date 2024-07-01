@@ -89,7 +89,7 @@ export const SearchProductsPage = () => {
             setSearchUrl('');
         }
         else {
-            setSearchUrl(`/search/findByTitleContaining?title = ${search} &page=0&size= ${productsPerPage}`)
+            setSearchUrl(`/search/findByTitleContaining?title=${search}&page=0&size=${productsPerPage}`) ////Note :- No spaces around = and &. in set serach url.
         }
     }
 
@@ -110,8 +110,8 @@ export const SearchProductsPage = () => {
                                 <input className='form-control me-2' type='search'
                                     placeholder='Search' aria-labelledby='Search'
                                     onChange={e => setSearch(e.target.value)} />
-                                <button className='btn btn-outline-success' 
-                                onClick={() => searchHandleChange()}>
+                                <button className='btn btn-outline-success'
+                                    onClick={() => searchHandleChange()}>
                                     Search
                                 </button>
                             </div>
