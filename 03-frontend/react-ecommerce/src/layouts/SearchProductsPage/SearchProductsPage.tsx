@@ -13,12 +13,21 @@ export const SearchProductsPage = () => {
     const [productsPerPage] = useState(5);
     const [totalAmountOfProducts, setTotalAmountOfProducts] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [search, setSearch] = useState('');
+    const [searchUrl, setSearchUrl] = useState('');
 
     useEffect(() => {
         const fetchProducts = async () => {
             const baseUrl: string = "http://localhost:8080/api/products";
 
-            const url: string = `${baseUrl}?page=${currentPage - 1}&size=5`;
+            let url: string = '';
+
+            if (searchUrl === '') {
+                url = `${baseUrl}?page=${currentPage - 1}&size=${productsPerPage}`;
+            }
+            else {
+                url = baseUrl + searchUrl;
+            }
             const response = await fetch(url);
 
             // guard clause
@@ -58,7 +67,7 @@ export const SearchProductsPage = () => {
 
         })
         window.scrollTo(0, 0);
-    }, [currentPage]);
+    }, [currentPage, searchUrl]);
 
     if (isLoading) {
         return (
@@ -73,6 +82,15 @@ export const SearchProductsPage = () => {
                 <p>{httpError}</p>
             </div>
         )
+    }
+
+    const searchHandleChange = () => {
+        if (search === '') {
+            setSearchUrl('');
+        }
+        else {
+            setSearchUrl(`/search/findByTitleContaining?title = ${search} &page=0&size= ${productsPerPage}`)
+        }
     }
 
     const indexOfLastProduct: number = currentPage * productsPerPage;
@@ -90,11 +108,12 @@ export const SearchProductsPage = () => {
                         <div className='col-6'>
                             <div className='d-flex'>
                                 <input className='form-control me-2' type='search'
-                                    placeholder='Search' aria-labelledby='Search' />
-                                <button className='btn btn-outline-success'>
+                                    placeholder='Search' aria-labelledby='Search'
+                                    onChange={e => setSearch(e.target.value)} />
+                                <button className='btn btn-outline-success' 
+                                onClick={() => searchHandleChange()}>
                                     Search
                                 </button>
-
                             </div>
                         </div>
                         <div className='col-4' >

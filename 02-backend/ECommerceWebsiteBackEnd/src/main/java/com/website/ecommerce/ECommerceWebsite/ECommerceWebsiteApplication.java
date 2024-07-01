@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "com.website.ecommerce")
 @EntityScan("com.website.ecommerce.entity")
-@EnableJpaRepositories(basePackages = "com.website.ecommerce.repo")
+@EnableJpaRepositories(basePackages = "com.website.ecommerce.dao")
 public class ECommerceWebsiteApplication {
 
 	public static void main(String[] args) {
