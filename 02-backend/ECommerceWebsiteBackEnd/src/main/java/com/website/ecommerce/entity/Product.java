@@ -1,8 +1,11 @@
 package com.website.ecommerce.entity;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "products")
 public class Product {
@@ -33,75 +36,6 @@ public class Product {
 
     @Column(name = "img")
     private String img;
-
-    public Product() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSeller() {
-        return seller;
-    }
-
-    public void setSeller(String seller) {
-        this.seller = seller;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getQuantities() {
-        return quantities;
-    }
-
-    public void setQuantities(int quantities) {
-        this.quantities = quantities;
-    }
-
-    public int getQuantityAvailable() {
-        return quantityAvailable;
-    }
-
-    public void setQuantityAvailable(int quantityAvailable) {
-        this.quantityAvailable = quantityAvailable;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-
 
 
 }

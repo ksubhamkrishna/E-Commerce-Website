@@ -15,6 +15,7 @@ export const SearchProductsPage = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
     const [searchUrl, setSearchUrl] = useState('');
+    const [categorySelection, setCategorySelection] = useState('Product Category');
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -26,6 +27,7 @@ export const SearchProductsPage = () => {
                 url = `${baseUrl}?page=${currentPage - 1}&size=${productsPerPage}`;
             }
             else {
+                let searchWithPage = searchUrl.replace('<pageNumber>', `${currentPage-1}`);
                 url = baseUrl + searchUrl;
             }
             const response = await fetch(url);
@@ -57,7 +59,6 @@ export const SearchProductsPage = () => {
 
                 });
             }
-
             setProducts(loadedProducts);
             setIsLoading(false);
         };
@@ -85,11 +86,34 @@ export const SearchProductsPage = () => {
     }
 
     const searchHandleChange = () => {
+        setCurrentPage(1);
         if (search === '') {
             setSearchUrl('');
         }
         else {
-            setSearchUrl(`/search/findByTitleContaining?title=${search}&page=0&size=${productsPerPage}`) ////Note :- No spaces around = and &. in set serach url.
+            setSearchUrl(`/search/findByTitleContaining?title=${search}&page=<pageNumber>&size=${productsPerPage}`) //Note :- No spaces around = and &. in set search url.
+        }
+        setCategorySelection('Product category');
+    }
+
+    const categoryField = (value: string) => {
+        setCurrentPage(1);
+
+        if (
+            value.toLowerCase() === 'furniture' ||
+            value.toLowerCase() === 'books' ||
+            value.toLowerCase() === 'electronics' ||
+            value.toLowerCase() === 'fashion' ||
+            value.toLowerCase() === 'groceries' ||
+            value.toLowerCase() === 'health and skincare products' ||
+            value.toLowerCase() === 'kitchen and household items' ||
+            value.toLowerCase() === 'sports products'
+        ) {
+            setCategorySelection(value);
+            setSearchUrl(`/search/findByCategory?category=${value}&page=<pageNumber>&size=${productsPerPage}`)
+        } else {
+            setCategorySelection('All');
+            setSearchUrl(`?page=<pageNumber>&size=${productsPerPage}`)
         }
     }
 
@@ -121,53 +145,53 @@ export const SearchProductsPage = () => {
                                 <button className='btn btn-secondary dropdown-toggle' type='button'
                                     id='dropdownMenuButton1' data-bs-toggle='dropdown'
                                     aria-expanded='false'>
-                                    Category
+                                    {categorySelection}
                                 </button>
                                 <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
-                                    <li>
+                                    <li onClick={() => categoryField('All')}>
                                         <a className='dropdown-item' href='#'>
                                             All
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('Furniture')}>
                                         <a className='dropdown-item' href='#'>
                                             Furniture
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('Books')}>
                                         <a className='dropdown-item' href='#'>
                                             Books
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('electronics')}>
                                         <a className='dropdown-item' href='#'>
                                             Electronics
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('Fashion')}>
                                         <a className='dropdown-item' href='#'>
                                             Fashion
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('Groceries')}>
                                         <a className='dropdown-item' href='#'>
                                             Groceries
                                         </a>
                                     </li>
 
-                                    <li>
+                                    <li onClick={() => categoryField('Health and Skincare Products')}>
                                         <a className='dropdown-item' href='#'>
                                             Health and Skincare Products
                                         </a>
                                     </li>
 
-                                    <li>
+                                    <li onClick={() => categoryField('Kitchen and Household Items')}>
                                         <a className='dropdown-item' href='#'>
                                             Kitchen and Household Items
                                         </a>
                                     </li>
 
-                                    <li>
+                                    <li onClick={() => categoryField('Sports Products')}>
                                         <a className='dropdown-item' href='#'>
                                             Sports Products
                                         </a>
@@ -177,18 +201,30 @@ export const SearchProductsPage = () => {
                             </div>
                         </div>
                     </div>
-                    {/* {totalAmountOfProducts > 0 ? */}
-                    {/* <> */}
-                    <div className='mt-3'>
-                        <h5>Number of results:({totalAmountOfProducts}) </h5>
-                    </div>
-                    <p>
-                        {indexOfFirstProduct + 1} to {lastItem} of {totalAmountOfProducts} items:
-                    </p>
-                    {products.map(product => (
 
-                        <SearchProduct product={product} key={product.id} />
-                    ))}
+                    {totalAmountOfProducts > 0 ?
+                        <>
+                            <div className='mt-3'>
+                                <h5>Number of results:({totalAmountOfProducts}) </h5>
+                            </div>
+                            <p>
+                                {indexOfFirstProduct + 1} to {lastItem} of {totalAmountOfProducts} items:
+                            </p>
+                            {products.map(product => (
+
+                                <SearchProduct product={product} key={product.id} />
+                            ))}
+                        </>
+                        :
+                        <div className='m-5'>
+                            <h3>
+                                Can't find what you are looking for?
+                            </h3>
+                            <a type='button' className='btn main-color btn-md px-4 me-md-2 fw-bold text-white'
+
+                                href='#'>Product Services</a>
+                        </div>
+                    }
                     {/* </>
                     :
                     <div className='m-5'>
