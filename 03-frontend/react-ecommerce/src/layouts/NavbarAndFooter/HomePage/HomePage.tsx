@@ -1,13 +1,13 @@
 import { Carousel } from "./components/Carousel";
 import { Carousel1 } from "./components/Carousel1";
-import { ExploreTopBooks } from "./components/ExploreTopBooks";
+import { ExploreTopProducts } from "./components/ExploreTopProducts";
 import { Heros } from "./components/Heros";
 import { LibraryServices } from "./components/LibraryServices";
 
 export const HomePage = () => {
     return (
         <>
-            <ExploreTopBooks />
+            <ExploreTopProducts />
             <Carousel />
             <Carousel1 />
             <Heros />

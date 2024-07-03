@@ -1,4 +1,6 @@
-export const ExploreTopBooks = () => {
+import { Link } from "react-router-dom";
+
+export const ExploreTopProducts = () => {
     return (
         <div className="p-5 mb-4 bg-dark header">
             <div className="container-fluid py-5 text-white 
@@ -6,9 +8,9 @@ export const ExploreTopBooks = () => {
                 <div>
                     <h1 className="dsiplay-5 fw-bold">Find Your Next adventure</h1>
                     <p className="col-md-8 fs-5">Where would you like to go next?</p>
-                    <a type='button' className="btn main-color btn-lg text-white" href='#'>
+                    <Link type='button' className="btn main-color btn-lg text-white" to='/search'>
                         Explore top Products
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
