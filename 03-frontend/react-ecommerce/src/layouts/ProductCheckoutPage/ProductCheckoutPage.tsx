@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProductModel from "../../models/ProductModel";
 import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { StarsReview } from "../Utils/StarsReview";
+import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 
 export const ProductCheckoutPage = () => {
 
@@ -85,6 +86,7 @@ export const ProductCheckoutPage = () => {
                         </div>
 
                     </div>
+                    <CheckoutAndReviewBox product={product} mobile={false} />
 
                 </div>
                 <hr />
@@ -109,9 +111,10 @@ export const ProductCheckoutPage = () => {
                     </div>
 
                 </div>
+                <CheckoutAndReviewBox product={product} mobile={false} />
                 <hr />
-
             </div>
         </div>
+
     );
 }
