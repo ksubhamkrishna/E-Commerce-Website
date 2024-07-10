@@ -16,7 +16,7 @@ export const Carousel1 = () => {
         const fetchProducts = async () => {
             const baseUrl: string = "http://localhost:8080/api/products";
 
-            const url: string = `${baseUrl}?page=0&size=9`;
+            const url: string = `${baseUrl}?page=0&size=12`;
             const response = await fetch(url);
 
             // guard clause
@@ -99,6 +99,13 @@ export const Carousel1 = () => {
                     <div className='carousel-item'>
                         <div className='row d-flex justify-content-center align-items-center'>
                             {products.slice(6, 9).map(product => (
+                                <ReturnProducts product={product} key={product.id} />
+                            ))}
+                        </div>
+                    </div>
+                    <div className='carousel-item'>
+                        <div className='row d-flex justify-content-center align-items-center'>
+                            {products.slice(9, 12).map(product => (
                                 <ReturnProducts product={product} key={product.id} />
                             ))}
                         </div>

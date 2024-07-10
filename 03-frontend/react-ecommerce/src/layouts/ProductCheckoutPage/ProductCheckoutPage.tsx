@@ -3,12 +3,21 @@ import ProductModel from "../../models/ProductModel";
 import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { StarsReview } from "../Utils/StarsReview";
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
+import ReviewModel from "../../models/ReviewModel";
+import LatestReviews from "./LatestReviews";
+
+
 
 export const ProductCheckoutPage = () => {
 
     const [product, setProduct] = useState<ProductModel>();
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
+
+    // Review State
+    const [reviews, setReviews] = useState<ReviewModel[]>([])
+    const [totalStars, setTotalStars] = useState(0);
+    const [isLoadingReview, setIsLoadingReview] = useState(true);
 
     const productId = (window.location.pathname).split('/')[2];
 
@@ -48,7 +57,54 @@ export const ProductCheckoutPage = () => {
 
     }, []);
 
-    if (isLoading) {
+    useEffect(() => {
+        const fetchProductReviews = async () => {
+            const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByProductId?productid=${productId}`
+
+            const responseReviews = await fetch(reviewUrl);
+
+            if (!responseReviews.ok) {
+                throw new Error('Something went wrong');
+            }
+
+            const responseJsonReviews = await responseReviews.json();
+
+            const responseData = responseJsonReviews._embedded.reviews;
+
+            const loadedReviews: ReviewModel[] = [];
+
+            let weightedStarReviews: number = 0;
+
+            for (const key in responseData) {
+                loadedReviews.push({
+                    id: responseData[key].id,
+                    userEmail: responseData[key].userEmail,
+                    date: responseData[key].date,
+                    rating: responseData[key].rating,
+                    product_id: responseData[key].product_id,
+                    reviewDescription: responseData[key].reviewDescription,
+                });
+                weightedStarReviews = weightedStarReviews + responseData[key].rating;
+            }
+
+            if (loadedReviews) {
+                const round = (Math.round((weightedStarReviews / loadedReviews.length) * 2) / 2).toFixed(1);
+                setTotalStars(Number(round));
+            }
+
+            setReviews(loadedReviews);
+            setIsLoadingReview(false);
+
+        };
+
+        fetchProductReviews().catch((error: any) => {
+            setIsLoadingReview(false);
+            setHttpError(error.message);
+        })
+    }, []);
+
+
+    if (isLoading || isLoadingReview) {
         return (
             <SpinnerLoading />
 
@@ -82,7 +138,7 @@ export const ProductCheckoutPage = () => {
                             <h2>{product?.title}</h2>
                             <h5 className="text-primary">{product?.seller}</h5>
                             <p className="lead">{product?.description}</p>
-                            <StarsReview rating={4} size={32} />
+                            <StarsReview rating={totalStars} size={32} />
                         </div>
 
                     </div>
@@ -90,6 +146,7 @@ export const ProductCheckoutPage = () => {
 
                 </div>
                 <hr />
+                <LatestReviews reviews={reviews} productId={product?.id} mobile={false} />
 
             </div>
             <div className="container d-lg-none mt-5">
@@ -107,12 +164,14 @@ export const ProductCheckoutPage = () => {
                         <h2>{product?.title}</h2>
                         <h5 className="text-primary">{product?.seller}</h5>
                         <p className="lead">{product?.description}</p>
-                        <StarsReview rating={2.5} size={32} />
+                        <StarsReview rating={totalStars} size={32} />
                     </div>
 
                 </div>
                 <CheckoutAndReviewBox product={product} mobile={false} />
                 <hr />
+
+                <LatestReviews reviews={reviews} productId={product?.id} mobile={true} />
             </div>
         </div>
 

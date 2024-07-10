@@ -1,6 +1,7 @@
 package com.website.ecommerce.config;
 
 import com.website.ecommerce.entity.Product;
+import com.website.ecommerce.entity.Review;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -25,7 +26,10 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 //        config.exposeIdsFor(Review.class);
 //        config.exposeIdsFor(Message.class);
 
+        config.exposeIdsFor(Review.class);
+
         disableHttpMethods(Product.class, config, theUnsupportedActions);
+        disableHttpMethods(Review.class, config, theUnsupportedActions);
 //        disableHttpMethods(Review.class, config, theUnsupportedActions);
 //        disableHttpMethods(Message.class, config, theUnsupportedActions);
 
