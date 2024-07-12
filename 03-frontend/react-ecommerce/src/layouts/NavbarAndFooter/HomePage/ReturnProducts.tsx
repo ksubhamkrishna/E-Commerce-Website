@@ -1,5 +1,6 @@
 import React from 'react';
 import ProductModel from '../../../models/ProductModel';
+import { Link } from 'react-router-dom';
 
 export const ReturnProducts: React.FC<{ product: ProductModel }> = (props) => {
     return (
@@ -21,7 +22,7 @@ export const ReturnProducts: React.FC<{ product: ProductModel }> = (props) => {
                     />}
                 <h6 className='mt-2'>{props.product.title}</h6>
                 <p>{props.product.seller}</p>
-                <a className='btn main-color text-white' href='#'>Reserve</a>
+                <Link className='btn main-color text-white' to={`checkout/${props.product.id}`}>Buy Now</Link>
             </div>
         </div>
 

@@ -1,5 +1,10 @@
+import { useOktaAuth } from "@okta/okta-react";
+import { Link } from "react-router-dom";
 
 export const Heros = () => {
+
+    const { authState } = useOktaAuth();
+
     return (
         <div>
             <div className='d-none d-lg-block'>
@@ -15,13 +20,15 @@ export const Heros = () => {
                                 Whether it is to buy a thing or ordering ,
                                 we will be able to provide the top product for you!
                             </p>
-                            {/* {authState?.isAuthenticated ? 
+
+
+                            {authState?.isAuthenticated ?
                                 <Link type='button' className='btn main-color btn-lg text-white'
-                                    to='search'>Explore top books </Link>
+                                    to='search'>Explore top products </Link>
                                 :
                                 <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
-                            }   */}
-                            <a className="btn main-color btn-lg text-white" href='#'>Sign up</a>
+                            }
+                            {/* <a className="btn main-color btn-lg text-white" href='#'>Sign up</a> */}
                         </div>
                     </div>
                 </div>
@@ -37,7 +44,12 @@ export const Heros = () => {
                                 and our products are always going to be our
                                 top priority.
                             </p>
-                            <a className="btn main-color btn-lg text-white" href='#'>Sign up</a>
+                            {authState?.isAuthenticated ?
+                                <Link type='button' className='btn main-color btn-lg text-white'
+                                    to='search'>Explore top products </Link>
+                                :
+                                <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
+                            }
                         </div>
                     </div>
 
@@ -60,13 +72,13 @@ export const Heros = () => {
                                 Whether it is to buy a new product or reorder another,
                                 we will be able to provide the top products for you!
                             </p>
-                            {/* {authState?.isAuthenticated ? 
+                            {authState?.isAuthenticated ?
                                 <Link type='button' className='btn main-color btn-lg text-white'
                                     to='search'>Explore top books</Link>
                                 :
                                 <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
-                        } */}
-                            <a className="btn main-color btn-lg text-white" href='#'>Sign up</a>
+                            }
+                            {/* <a className="btn main-color btn-lg text-white" href='#'>Sign up</a> */}
                         </div>
 
                     </div>
@@ -83,7 +95,12 @@ export const Heros = () => {
                             </p>
 
                         </div>
-                        <a className="btn main-color btn-lg text-white" href='#'>Sign up</a>
+                        {authState?.isAuthenticated ?
+                            <Link type='button' className='btn main-color btn-lg text-white'
+                                to='search'>Explore top books</Link>
+                            :
+                            <Link className='btn main-color btn-lg text-white' to='/login'>Sign up</Link>
+                        }
                     </div>
                 </div>
             </div>
