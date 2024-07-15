@@ -4,9 +4,11 @@ import com.website.ecommerce.dao.CheckoutRepository;
 import com.website.ecommerce.dao.ProductRepository;
 import com.website.ecommerce.entity.Checkout;
 import com.website.ecommerce.entity.Product;
+import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -32,10 +34,36 @@ public class ProductService {
             throw new Exception("Product doesn't exist or already checked out by user");
         }
 
+        product.get().setQuantityAvailable(product.get().getQuantityAvailable()-1);
+
+        productRepository.save(product.get());
+
+        Checkout checkout = new Checkout(
+                userEmail,
+                LocalDate.now().toString(),
+                LocalDate.now().plusDays( 7).toString(),
+        product.get().getId()
+        );
+
+        checkoutRepository.save(checkout);
+
+        return product.get();
     }
 
+    public Boolean checkoutProductByUser(String userEmail, Long productId){
+        Checkout validateCheckout = checkoutRepository.findByUserEmailAndProductId(userEmail, productId);
 
+        if(validateCheckout != null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
+    public int currentLoansCount(String userEmail){
+        return checkoutRepository.findProductsByUserEmail(userEmail).size();
+    }
 }
 
 
