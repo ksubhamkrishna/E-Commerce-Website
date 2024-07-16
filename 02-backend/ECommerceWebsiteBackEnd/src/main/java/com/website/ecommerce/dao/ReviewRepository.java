@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-Page<Review> findByProductId(@RequestParam("book_id") Long bookId, Pageable pageable);
+Page<Review> findByProductId(@RequestParam("product_id") Long productId, Pageable pageable);
 
 }
