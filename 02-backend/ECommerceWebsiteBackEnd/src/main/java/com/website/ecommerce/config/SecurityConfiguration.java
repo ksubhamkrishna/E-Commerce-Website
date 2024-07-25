@@ -21,7 +21,8 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         // Protect endpoints at /api/<type>/secure
         http.authorizeRequests(configurer ->
                 configurer
-                        .antMatchers("/api/products/secure/**")
+                        .antMatchers("/api/products/secure/**",
+                                "/api/reviews/secure/**")
                         .authenticated())
                         .oauth2ResourceServer()
                         .jwt();
