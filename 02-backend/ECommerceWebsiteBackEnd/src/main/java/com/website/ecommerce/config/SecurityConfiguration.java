@@ -1,6 +1,5 @@
 package com.website.ecommerce.config;
 
-
 import com.okta.spring.boot.oauth.Okta;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

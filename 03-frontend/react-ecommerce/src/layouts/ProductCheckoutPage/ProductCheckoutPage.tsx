@@ -21,6 +21,9 @@ export const ProductCheckoutPage = () => {
     const [totalStars, setTotalStars] = useState(0);
     const [isLoadingReview, setIsLoadingReview] = useState(true);
 
+    const [isReviewsLeft, setIsReviewsleft] = useState(false);
+    const [isLoadingUserReview, setIsLoadingUserReview] = useState(true);
+
     // Loans Count state
     const [currentLoansCount, setCurrentLoansCount] = useState(0);
     const [isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] = useState(true);
@@ -109,8 +112,40 @@ export const ProductCheckoutPage = () => {
             setIsLoadingReview(false);
             setHttpError(error.message);
         })
-    }, []);
+    }, [isReviewsLeft]);
 
+    useEffect(() => {
+
+        const fetchUserReviewProduct = async () => {
+
+            if (authState && authState.isAuthenticated) {
+                const url = `http://localhost:8080/api/reviews/secure/user/product/?productId=${productId}`;
+
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const userReview = await fetch(url, requestOptions);
+                if (!userReview.ok) {
+                    throw new Error('Something went Wrong');
+                }
+                const userReviewResponseJson = await userReview.json();
+
+                setIsReviewsleft(userReviewResponseJson);
+            }
+
+            setIsLoadingUserReview(false);
+
+        }
+
+        fetchUserReviewProduct().catch((error: any) => {
+            setIsLoadingUserReview(false);
+            setHttpError(error.message);
+        })
+    }, [authState]);
 
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
@@ -162,7 +197,7 @@ export const ProductCheckoutPage = () => {
             setHttpError(error.message);
         })
     }, [authState]);
-    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingProductCheckedOut) {
+    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingProductCheckedOut || isLoadingUserReview) {
         return (
             <SpinnerLoading />
         )
@@ -214,7 +249,7 @@ export const ProductCheckoutPage = () => {
                     </div>
                     <CheckoutAndReviewBox product={product} mobile={false} currentLoansCount={currentLoansCount}
                         isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut}
-                        checkoutProduct={checkoutProduct} />
+                        checkoutProduct={checkoutProduct} isReviewLeft={isReviewsLeft} />
                 </div>
                 <hr />
                 <LatestReviews reviews={reviews} productId={product?.id} mobile={true} />
@@ -236,7 +271,7 @@ export const ProductCheckoutPage = () => {
                     </div>
                 </div>
                 <CheckoutAndReviewBox product={product} mobile={false} currentLoansCount={currentLoansCount} isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut}
-                    checkoutProduct={checkoutProduct} />
+                    checkoutProduct={checkoutProduct} isReviewLeft={isReviewsLeft} />
                 <hr />
                 <LatestReviews reviews={reviews} productId={product?.id} mobile={true} />
             </div>
