@@ -26,8 +26,6 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
         config.exposeIdsFor(Review.class);
 //        config.exposeIdsFor(Message.class);
 
-        config.exposeIdsFor(Review.class);
-
         disableHttpMethods(Product.class, config, theUnsupportedActions);
         disableHttpMethods(Review.class, config, theUnsupportedActions);
 //        disableHttpMethods(Review.class, config, theUnsupportedActions);
