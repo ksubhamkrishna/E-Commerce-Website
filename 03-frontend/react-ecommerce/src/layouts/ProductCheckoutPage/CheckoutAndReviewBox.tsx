@@ -5,7 +5,7 @@ import { LeaveAReview } from "../Utils/LeaveAReview";
 export const CheckoutAndReviewBox: React.FC<{
     product: ProductModel | undefined, mobile: boolean,
     currentLoansCount: number, isAuthenticated: any, isCheckedOut: boolean,
-    checkoutProduct: any, isReviewLeft: boolean
+    checkoutProduct: any, isReviewLeft: boolean, submitReview: any
 }> = (props) => {
 
 
@@ -26,7 +26,7 @@ export const CheckoutAndReviewBox: React.FC<{
         if (props.isAuthenticated && !props.isReviewLeft) {
             return (
                 <p>
-                    <LeaveAReview />
+                    <LeaveAReview submitReview={props.submitReview} />
                 </p>)
         } else if (props.isAuthenticated && props.isReviewLeft) {
             return (

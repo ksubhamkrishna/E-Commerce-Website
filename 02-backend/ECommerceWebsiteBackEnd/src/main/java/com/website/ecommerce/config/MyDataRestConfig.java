@@ -23,7 +23,7 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
                 HttpMethod.PUT};
 
         config.exposeIdsFor(Product.class);
-//        config.exposeIdsFor(Review.class);
+        config.exposeIdsFor(Review.class);
 //        config.exposeIdsFor(Message.class);
 
         config.exposeIdsFor(Review.class);

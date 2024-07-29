@@ -4,8 +4,9 @@ import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { StarsReview } from "../Utils/StarsReview";
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import ReviewModel from "../../models/ReviewModel";
-import LatestReviews from "./LatestReviews";
+import {LatestReviews} from "./LatestReviews";
 import { useOktaAuth } from "@okta/okta-react";
+import ReviewRequestModel from "../../models/ReviewRequestModel";
 
 
 export const ProductCheckoutPage = () => {
@@ -228,6 +229,29 @@ export const ProductCheckoutPage = () => {
     }
 
 
+    async function submitReview(starInput: number, reviewDescription: string) {
+        let productId: number = 0;
+        if (product?.id) {
+            productId = product.id;
+        }
+
+        const reviewRequestModel = new ReviewRequestModel(starInput, productId, reviewDescription);
+        const url = `http://localhost:8080/api/reviews/secure`;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewRequestModel)
+        };
+        const returnResponse = await fetch(url, requestOptions);
+        if (!returnResponse.ok) {
+            throw new Error('Something went Wrong!');
+        }
+        setIsReviewsleft(true);
+    }
+
     return (
         <div>
             <div className="container d-none d-lg-block">
@@ -249,10 +273,10 @@ export const ProductCheckoutPage = () => {
                     </div>
                     <CheckoutAndReviewBox product={product} mobile={false} currentLoansCount={currentLoansCount}
                         isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut}
-                        checkoutProduct={checkoutProduct} isReviewLeft={isReviewsLeft} />
+                        checkoutProduct={checkoutProduct} isReviewLeft={isReviewsLeft} submitReview={submitReview} />
                 </div>
                 <hr />
-                <LatestReviews reviews={reviews} productId={product?.id} mobile={true} />
+                <LatestReviews reviews={reviews} productId={product?.id} mobile={false} />
             </div>
             <div className="container d-lg-none mt-5">
                 <div className="d-flex justify-content-center align-items-center">
@@ -271,7 +295,7 @@ export const ProductCheckoutPage = () => {
                     </div>
                 </div>
                 <CheckoutAndReviewBox product={product} mobile={false} currentLoansCount={currentLoansCount} isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut}
-                    checkoutProduct={checkoutProduct} isReviewLeft={isReviewsLeft} />
+                    checkoutProduct={checkoutProduct} isReviewLeft={isReviewsLeft} submitReview={submitReview} />
                 <hr />
                 <LatestReviews reviews={reviews} productId={product?.id} mobile={true} />
             </div>

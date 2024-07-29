@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import ReviewModel from '../../models/ReviewModel';
 import { Review } from '../Utils/Review';
 
-const LatestReviews: React.FC<{
+export const LatestReviews: React.FC<{
     reviews: ReviewModel[];
     productId: number | undefined;
     mobile: boolean;
 }> = (props) => {
+    console.log('Reviews:', props.reviews);
+    console.log('Product ID:', props.productId);
+
     return (
         <div className={props.mobile ? 'mt-3' : 'row mt-5'}>
             <div className={props.mobile ? '' : 'col-sm-2 col-md-2'}>
@@ -17,12 +20,12 @@ const LatestReviews: React.FC<{
                 {props.reviews.length > 0 ? (
                     <>
                         {props.reviews.slice(0, 3).map((eachReview) => (
-                            <Review review={eachReview} key={eachReview.id}></Review>
+                            <Review review={eachReview} key={eachReview.id} />
                         ))}
                         <div className="m-3">
                             <Link
                                 className="btn main-color btn-md text-white"
-                                to="#"  // Assuming this is your correct route path
+                                to={`/reviewlist/${props.productId}`} // Assuming this is your correct route path
                             >
                                 View all reviews
                             </Link>
@@ -37,5 +40,3 @@ const LatestReviews: React.FC<{
         </div>
     );
 };
-
-export default LatestReviews;
