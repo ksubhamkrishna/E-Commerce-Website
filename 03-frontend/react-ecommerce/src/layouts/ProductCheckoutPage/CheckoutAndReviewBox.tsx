@@ -19,7 +19,7 @@ export const CheckoutAndReviewBox: React.FC<{
                 return (<p className="text-danger"> Too many products checked out.</p>)
             }
         }
-        return (<Link to={'/login'} className="btn btn-success btn-lg">Sign in</Link>)
+        return (<Link to={"/login"} className="btn btn-success btn-lg">Sign in</Link>)
     }
 
     function reviewRender() {
@@ -50,7 +50,7 @@ export const CheckoutAndReviewBox: React.FC<{
             <div className="card-body container">
                 <div className="mt-3">
                     <p>
-                        <b>{props.currentLoansCount}/5 </b>
+                        <b>{props.currentLoansCount} </b>
                         Products Checked Out
                     </p>
                     <hr />

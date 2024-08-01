@@ -8,8 +8,7 @@ export const LatestReviews: React.FC<{
     productId: number | undefined;
     mobile: boolean;
 }> = (props) => {
-    console.log('Reviews:', props.reviews);
-    console.log('Product ID:', props.productId);
+    
 
     return (
         <div className={props.mobile ? 'mt-3' : 'row mt-5'}>
@@ -17,13 +16,13 @@ export const LatestReviews: React.FC<{
                 <h2>Latest reviews: </h2>
             </div>
             <div className="col-sm-10 col-md-10">
-                {props.reviews.length > 0 ? (
+                {props.reviews.length > 0 ? 
                     <>
                         {props.reviews.slice(0, 3).map((eachReview) => (
-                            <Review review={eachReview} key={eachReview.id} />
+                            <Review review={eachReview} key={eachReview.id} ></Review>
                         ))}
                         <div className="m-3">
-                            <Link
+                            <Link type="button"
                                 className="btn main-color btn-md text-white"
                                 to={`/reviewlist/${props.productId}`} // Assuming this is your correct route path
                             >
@@ -31,11 +30,11 @@ export const LatestReviews: React.FC<{
                             </Link>
                         </div>
                     </>
-                ) : (
+                 : 
                     <div className="m-3">
                         <p className="lead">Currently there are no reviews for this product</p>
                     </div>
-                )}
+                }
             </div>
         </div>
     );

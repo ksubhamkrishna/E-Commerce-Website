@@ -4,11 +4,14 @@ import com.website.ecommerce.dao.CheckoutRepository;
 import com.website.ecommerce.dao.ProductRepository;
 import com.website.ecommerce.entity.Checkout;
 import com.website.ecommerce.entity.Product;
+import com.website.ecommerce.responsemodels.ShelfCurrentLoansResponse;
 import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,6 +66,23 @@ public class ProductService {
 
     public int currentLoansCount(String userEmail){
         return checkoutRepository.findProductsByUserEmail(userEmail).size();
+    }
+
+    public List<ShelfCurrentLoansResponse> currentLoans(String userEmail) throws Exception{
+
+        List<ShelfCurrentLoansResponse> shelfCurrentLoansResponses = new ArrayList<>();
+
+        List<Checkout> checkoutList = checkoutRepository.findProductsByUserEmail(userEmail);
+
+        List<Long> productIdList = new ArrayList<>();
+
+        for(Checkout i : checkoutList){
+            productIdList.add(i.getProductId());
+        }
+
+        List<Product> products = productRepository.findProductsByProductIds(productIdList);
+
+
     }
 }
 

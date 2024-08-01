@@ -39,7 +39,7 @@ export const ProductCheckoutPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             const baseUrl: string = `http://localhost:8080/api/products/${productId}`;
-
+            const url: string = `${baseUrl}?page=0&size=20`;
             const response = await fetch(baseUrl);
 
             // guard clause
@@ -74,7 +74,7 @@ export const ProductCheckoutPage = () => {
 
     useEffect(() => {
         const fetchProductReviews = async () => {
-            const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByProductId?productid=${productId}`;
+            const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByProductId?productId=${productId}`;
 
             const responseReviews = await fetch(reviewUrl);
 
