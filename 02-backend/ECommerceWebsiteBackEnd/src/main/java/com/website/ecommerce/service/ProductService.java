@@ -9,10 +9,13 @@ import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -82,6 +85,30 @@ public class ProductService {
 
         List<Product> products = productRepository.findProductsByProductIds(productIdList);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        for(Product product : products){
+            Optional<Checkout> checkout = checkoutList.stream()
+                    .filter(x-> x.getProductId() == product.getId()).findFirst();
+
+            if(checkout.isPresent()){
+
+                Date d1 = sdf.parse(checkout.get().getReturnDate());
+                Date d2 = sdf.parse(LocalDate.now().toString());
+
+                TimeUnit time = TimeUnit.DAYS;
+
+                long difference_In_Time = time.convert(d1.getTime() - d2.getTime(),
+                        TimeUnit.MILLISECONDS);
+
+            shelfCurrentLoansResponses.add(new ShelfCurrentLoansResponse(product, (int) difference_In_Time));
+
+
+            }
+
+        }
+
+        return shelfCurrentLoansResponses;
 
     }
 }
