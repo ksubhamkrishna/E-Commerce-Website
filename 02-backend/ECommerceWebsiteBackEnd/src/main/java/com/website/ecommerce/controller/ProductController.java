@@ -52,6 +52,12 @@ public class ProductController {
 
     }
 
+    @PutMapping("/secure/return")
+    public void returnProduct(@RequestHeader(value = "Authorization") String token,
+                              @RequestParam Long productId) throws Exception{
 
+        String userEmail = ExtractJWT.payLoadStringJWTExtraction(token, "\"sub\"");
+        productService.returnProduct(userEmail, productId);
+    }
 
 }

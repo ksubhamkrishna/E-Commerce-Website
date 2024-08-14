@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ShelfCurrentLoans from "../../../models/ShelfCurrentLoans";
 import { SpinnerLoading } from "../../Utils/SpinnerLoading";
 import { Link } from "react-router-dom";
+import { LoansModal } from "./LoansModal";
 
 export const Loans = () => {
     const { authState } = useOktaAuth();
@@ -50,33 +51,21 @@ export const Loans = () => {
         );
     }
 
-    const handleBookAction = async (url: string, method: 'PUT') => {
+    async function returnProduct(productId: number){
+        const url = `http://localhost:8080/api/products/secure/return/?productId= ${productId}`;
         const requestOptions = {
-            method,
-            headers: {
-                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
-                'Content-Type': 'application/json'
-            }
-        };
-        try {
-            const response = await fetch(url, requestOptions);
-            if (!response.ok) throw new Error('Something went wrong!');
-            setCheckout(prev => !prev);
-        } catch (error: any) {
-            setHttpError(error.message);
+            method : 'PUT',
+            headers:{
+            Authorization : `Bearer ${authState?.accessToken?.accessToken}`,
+            'Content-Type' : 'application/json'
         }
     };
-
-    const returnBook = (productId: number) => {
-        const url = `http://localhost:8080/api/books/secure/return/?bookId=${productId}`;
-        handleBookAction(url, 'PUT');
-    };
-
-    const renewLoan = (productId: number) => {
-        const url = `http://localhost:8080/api/books/secure/renew/loan/?productId=${productId}`;
-        handleBookAction(url, 'PUT');
-    };
-
+    const returnResponse = await fetch(url, requestOptions);
+    if(!returnResponse.ok){
+        throw new Error('Something went wrong!');
+    }
+    setCheckout(!checkout);
+    }
     return (
         <div>
             {/* Desktop */}
@@ -137,6 +126,7 @@ export const Loans = () => {
                                     </div>
                                 </div>
                                 <hr />
+                                <LoansModal shelfCurrentLoan={shelfCurrentLoan} mobile ={false} returnProduct = {returnProduct}/>
                             </div>
                         ))}
                     </>
@@ -193,7 +183,7 @@ export const Loans = () => {
                                                 Manage Loan
                                             </button>
                                             <Link to='search' className='list-group-item list-group-item-action'>
-                                                Search more books?
+                                                Search more products?
                                             </Link>
                                         </div>
                                         <hr />
@@ -205,6 +195,8 @@ export const Loans = () => {
                                         </Link>
                                     </div>
                                 </div>
+                                <hr/>
+                                <LoansModal shelfCurrentLoan={shelfCurrentLoan} mobile ={true} returnProduct = {returnProduct}/>
                             </div>
                         ))}
                     </>

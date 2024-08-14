@@ -111,6 +111,21 @@ public class ProductService {
         return shelfCurrentLoansResponses;
 
     }
+
+    public void returnProduct(String userEmail, Long productId) throws Exception{
+        Optional<Product> product = productRepository.findById(productId);
+
+        Checkout validateCheckout = checkoutRepository.findByUserEmailAndProductId(userEmail, productId);
+
+        if(!product.isPresent() || validateCheckout == null){
+            throw new Exception("Product does not exist or not checked out by the user");
+        }
+        product.get().setQuantityAvailable(product.get().getQuantityAvailable()+1);
+
+        productRepository.save(product.get());
+
+        checkoutRepository.deleteById(validateCheckout.getId());
+    }
 }
 
 
