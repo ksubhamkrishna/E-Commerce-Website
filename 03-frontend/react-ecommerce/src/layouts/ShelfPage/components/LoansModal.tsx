@@ -56,7 +56,7 @@ aria-labelledby = 'staticBackdropLabel' aria-hidden = 'true' key = {props.shelfC
                         </button>
                         <button onClick={
                             props.shelfCurrentLoan.daysLeft<0 ? 
-                            (event ) => event.preventDefault()
+                            (event) => event.preventDefault()
                             :
                             () => props.renewLoan(props.shelfCurrentLoan.product.id)
                         }   data-bs-dismiss = 'modal'

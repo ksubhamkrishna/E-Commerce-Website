@@ -64,7 +64,7 @@ public class ProductController {
     public void renewLoan(@RequestHeader(value = "Authorization") String token,
                           @RequestParam Long productId) throws Exception{
 
-        String userEmail = ExtractJWT.payLoadStringJWTExtraction("\"sub\"");
+        String userEmail = ExtractJWT.payLoadStringJWTExtraction(token,"\"sub\"");
 
         productService.renewLoan(userEmail, productId);
 
