@@ -1,6 +1,6 @@
 import ShelfCurrentLoans from "../../../models/ShelfCurrentLoans";
 
-export const LoansModal:React.FC<{shelfCurrentLoan: ShelfCurrentLoans, mobile: boolean, returnProduct:any}>=(props) => {
+export const LoansModal:React.FC<{shelfCurrentLoan: ShelfCurrentLoans, mobile: boolean, returnProduct:any, renewLoan : any }>=(props) => {
     return(
 <div className='modal fade' id={props.mobile?  `mobilemodal${props.shelfCurrentLoan.product.id}`:
 `modal${props.shelfCurrentLoan.product.id}`} data-bs-backdrop = 'static' data-bs-keyboard = 'false'
@@ -50,11 +50,16 @@ aria-labelledby = 'staticBackdropLabel' aria-hidden = 'true' key = {props.shelfC
                                         )}
 
                     <div className="list-group mt-3">
-                        <button data-bs-dismiss = 'modal' className="list-group-item list-group-item-action"
+                        <button onClick={()=>props.returnProduct(props.shelfCurrentLoan.product.id)} data-bs-dismiss = 'modal' className="list-group-item list-group-item-action"
                             aria-current = 'true'>
                                 Return Product
                         </button>
-                        <button data-bs-dismiss = 'modal'
+                        <button onClick={
+                            props.shelfCurrentLoan.daysLeft<0 ? 
+                            (event ) => event.preventDefault()
+                            :
+                            () => props.renewLoan(props.shelfCurrentLoan.product.id)
+                        }   data-bs-dismiss = 'modal'
                         className={props.shelfCurrentLoan.daysLeft<0?
                             'list-group-item list-group-item-action inactiveLink':
                             'list-group-item list-group-item-action'

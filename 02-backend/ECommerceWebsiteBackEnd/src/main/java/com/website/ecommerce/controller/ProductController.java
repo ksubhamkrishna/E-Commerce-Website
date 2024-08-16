@@ -60,4 +60,14 @@ public class ProductController {
         productService.returnProduct(userEmail, productId);
     }
 
+    @PutMapping("/secure/renew/loan")
+    public void renewLoan(@RequestHeader(value = "Authorization") String token,
+                          @RequestParam Long productId) throws Exception{
+
+        String userEmail = ExtractJWT.payLoadStringJWTExtraction("\"sub\"");
+
+        productService.renewLoan(userEmail, productId);
+
+    }
+
 }
