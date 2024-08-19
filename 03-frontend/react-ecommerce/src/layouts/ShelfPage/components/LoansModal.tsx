@@ -33,21 +33,21 @@ aria-labelledby = 'staticBackdropLabel' aria-hidden = 'true' key = {props.shelfC
                         </div>
                     </div>
                     <hr/>
-                    {props.shelfCurrentLoan.daysLeft > 0 && (
+                    {props.shelfCurrentLoan.daysLeft > 0 && 
                                             <p className='text-secondary'>
                                                 Due in {props.shelfCurrentLoan.daysLeft} days.
                                             </p>
-                                        )}
-                                        {props.shelfCurrentLoan.daysLeft === 0 && (
+                                        }
+                                        {props.shelfCurrentLoan.daysLeft === 0 && 
                                             <p className='text-success'>
                                                 Due Today.
                                             </p>
-                                        )}
-                                        {props.shelfCurrentLoan.daysLeft < 0 && (
+                                        }
+                                        {props.shelfCurrentLoan.daysLeft < 0 && 
                                             <p className='text-danger'>
                                                 Past due by {props.shelfCurrentLoan.daysLeft} days.
                                             </p>
-                                        )}
+                                        }
 
                     <div className="list-group mt-3">
                         <button onClick={()=>props.returnProduct(props.shelfCurrentLoan.product.id)} data-bs-dismiss = 'modal' className="list-group-item list-group-item-action"
