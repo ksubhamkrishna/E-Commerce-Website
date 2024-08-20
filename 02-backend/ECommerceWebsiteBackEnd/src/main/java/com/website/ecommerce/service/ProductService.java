@@ -1,8 +1,10 @@
 package com.website.ecommerce.service;
 
 import com.website.ecommerce.dao.CheckoutRepository;
+import com.website.ecommerce.dao.HistoryRepository;
 import com.website.ecommerce.dao.ProductRepository;
 import com.website.ecommerce.entity.Checkout;
+import com.website.ecommerce.entity.History;
 import com.website.ecommerce.entity.Product;
 import com.website.ecommerce.responsemodels.ShelfCurrentLoansResponse;
 import net.bytebuddy.asm.Advice;
@@ -25,9 +27,13 @@ public class ProductService {
 
     private CheckoutRepository checkoutRepository;
 
-    public ProductService(ProductRepository productRepository, CheckoutRepository checkoutRepository){
+    private HistoryRepository historyRepository;
+
+    public ProductService(ProductRepository productRepository, CheckoutRepository checkoutRepository,
+                          HistoryRepository historyRepository ){
             this.productRepository = productRepository;
             this.checkoutRepository = checkoutRepository;
+            this.historyRepository= historyRepository;
 
     }
 
@@ -125,6 +131,18 @@ public class ProductService {
         productRepository.save(product.get());
 
         checkoutRepository.deleteById(validateCheckout.getId());
+
+        History history = new History(
+                userEmail,
+                validateCheckout.getCheckoutDate(),
+                LocalDate.now().toString(),
+                product.get().getTitle(),
+                product.get().getSeller(),
+                product.get().getDescription(),
+                product.get().getImg()
+        );
+
+        historyRepository.save(history);
     }
 
     public void renewLoan(String userEmail,Long productId ) throws Exception{
