@@ -21,7 +21,8 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeRequests(configurer ->
                 configurer
                         .antMatchers("/api/products/secure/**",
-                                "/api/reviews/secure/**")
+                                "/api/reviews/secure/**",
+                                "/api/messages/secure/**")
                         .authenticated())
                         .oauth2ResourceServer()
                         .jwt();
